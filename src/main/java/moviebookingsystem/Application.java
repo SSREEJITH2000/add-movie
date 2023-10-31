@@ -20,5 +20,4 @@ public class Application {
 				.setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
 		return mapper;
 	}
-
 }

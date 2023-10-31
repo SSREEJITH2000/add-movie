@@ -1,7 +1,5 @@
 package moviebookingsystem.contract.request;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import moviebookingsystem.constant.Genre;

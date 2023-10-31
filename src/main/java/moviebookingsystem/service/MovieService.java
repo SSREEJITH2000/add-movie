@@ -1,7 +1,6 @@
 package moviebookingsystem.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
@@ -15,7 +14,6 @@ import moviebookingsystem.repository.MemberRepository;
 import moviebookingsystem.repository.MovieRepository;
 import moviebookingsystem.repository.SeatRepository;
 import moviebookingsystem.repository.ShowTimeRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,14 +23,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class MovieService {
     private final MovieRepository movieRepository;
     private final ShowTimeRepository showTimeRepository;
     private final BookingRepository bookingRepository;
     private final SeatRepository seatRepository;
     private final MemberRepository memberRepository;
-    private final ModelMapper modelMapper;
 
     public Long addMovie(MovieRequest request) {
         Movie entity = new Movie(request.getName(), request.getGenre());

@@ -3,10 +3,7 @@ package moviebookingsystem.service;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
-import moviebookingsystem.model.Booking;
-import moviebookingsystem.model.Member;
 import moviebookingsystem.model.Movie;
-import moviebookingsystem.model.Seat;
 import moviebookingsystem.model.ShowTime;
 import moviebookingsystem.repository.BookingRepository;
 import moviebookingsystem.repository.MemberRepository;
@@ -17,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,8 +34,7 @@ public class MovieServiceTest {
     private BookingRepository bookingRepository;
     private SeatRepository seatRepository;
     private MemberRepository memberRepository;
-    private ModelMapper modelMapper;
-    private MovieService movieService = new MovieService(null,null,null,null,null,null);
+    private MovieService movieService = new MovieService(null,null,null,null,null);
     @BeforeEach
     public void init(){
         MockitoAnnotations.openMocks(this);
@@ -49,7 +43,7 @@ public class MovieServiceTest {
         bookingRepository = Mockito.mock(BookingRepository.class);
         seatRepository = Mockito.mock(SeatRepository.class);
         memberRepository = Mockito.mock(MemberRepository.class);
-        movieService = new MovieService(movieRepository,showTimeRepository,bookingRepository,seatRepository,memberRepository,modelMapper);
+        movieService = new MovieService(movieRepository,showTimeRepository,bookingRepository,seatRepository,memberRepository);
     }
     @Test
     void testAddMovie(){
@@ -110,11 +104,24 @@ public class MovieServiceTest {
         verify(movieRepository,times(1)).save(any(Movie.class));
     }
     @Test
+    public void testUpdateMovieById_MovieNotFound() {
+        long id = 1L;
+        MovieRequest request = new MovieRequest();
+        when(movieRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> movieService.updateMovieById(id, request));
+    }
+    @Test
     void testDeleteMovieById(){
         long id = 1L;
         when(movieRepository.existsById(id)).thenReturn(true);
         movieService.deleteMovieById(id);
         verify(movieRepository,times(1)).deleteById(id);
+    }
+    @Test
+    public void testDeleteMovieById_MovieNotFound() {
+        long id = 1L;
+        when(movieRepository.existsById(id)).thenReturn(false);
+        assertThrows(RuntimeException.class, () -> movieService.deleteMovieById(id));
     }
     @Test
     void testGetAllMoviesByGenre(){
@@ -147,6 +154,13 @@ public class MovieServiceTest {
         verify(movieRepository, times(1)).save(movie);
     }
     @Test
+    public void testAddShowTimesToMovie_MovieNotFound() {
+        long movieId = 1L;
+        List<ShowTime> showTimes = Arrays.asList(new ShowTime(), new ShowTime());
+        when(movieRepository.findById(movieId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> movieService.addShowTimesToMovie(movieId, showTimes));
+    }
+    @Test
     public void testGetAllShowTimesForMovie() {
         Long movieId = 1L;
         ShowTime showTime1 = new ShowTime();
@@ -159,11 +173,29 @@ public class MovieServiceTest {
         assertEquals(expectedShowTimes, actualShowTimes);
     }
     @Test
+    public void testGetAllShowTimesForMovie_MovieNotFound() {
+        Long movieId = 1L;
+        when(movieRepository.findById(movieId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> movieService.getAllShowTimesForMovie(movieId));
+    }
+    @Test
     void testDeleteShowTime(){
         ShowTime showTime = new ShowTime();
         showTime.setId(1L);
         when(showTimeRepository.findById(1L)).thenReturn(Optional.of(showTime));
         movieService.deleteShowTime(1L);
         verify(showTimeRepository, times(1)).delete(showTime);
+    }
+    @Test
+    public void testDeleteShowTime_ShowTimeNotFound() {
+        Long showTimeId = 1L;
+        when(showTimeRepository.findById(showTimeId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> movieService.deleteShowTime(showTimeId));
+    }
+    @Test
+    public void testCreateBooking_MovieNotFound() {
+        BookingRequest request = new BookingRequest();
+        when(movieRepository.findById(request.getMovieId())).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> movieService.createBooking(request));
     }
 }
