@@ -1,8 +1,12 @@
 package moviebookingsystem.service;
 
 import moviebookingsystem.constant.Genre;
+import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
+import moviebookingsystem.model.Booking;
+import moviebookingsystem.model.Member;
 import moviebookingsystem.model.Movie;
+import moviebookingsystem.model.Seat;
 import moviebookingsystem.model.ShowTime;
 import moviebookingsystem.repository.BookingRepository;
 import moviebookingsystem.repository.MemberRepository;
@@ -141,7 +145,18 @@ public class MovieServiceTest {
         verify(showTimeRepository, times(1)).save(showTime);
         verify(movieRepository, times(1)).save(movie);
     }
-
+    @Test
+    public void testGetAllShowTimesForMovie() {
+        Long movieId = 1L;
+        ShowTime showTime1 = new ShowTime();
+        ShowTime showTime2 = new ShowTime();
+        List<ShowTime> expectedShowTimes = Arrays.asList(showTime1, showTime2);
+        Movie movie = new Movie();
+        movie.setShowTimes(expectedShowTimes);
+        when(movieRepository.findById(movieId)).thenReturn(Optional.of(movie));
+        List<ShowTime> actualShowTimes = movieService.getAllShowTimesForMovie(movieId);
+        assertEquals(expectedShowTimes, actualShowTimes);
+    }
     @Test
     void testDeleteShowTime(){
         ShowTime showTime = new ShowTime();

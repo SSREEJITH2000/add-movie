@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > MovieRepository</title>
+  <title>Coverage Report > BookingRepository</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">moviebookingsystem.repository</a>
 </div>
 
-<h1>Coverage Summary for Class: MovieRepository (moviebookingsystem.repository)</h1>
+<h1>Coverage Summary for Class: BookingRepository (moviebookingsystem.repository)</h1>
 
 <table class="coverageStats">
 
@@ -30,13 +30,13 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">MovieRepository$MockitoMock$tuRDwJMn</td>
+    <td class="name">BookingRepository$MockitoMock$IoE3qsSl</td>
   </tr>
   <tr>
-    <td class="name">MovieRepository$MockitoMock$tuRDwJMn$auxiliary$5Gur8bIV</td>
+    <td class="name">BookingRepository$MockitoMock$IoE3qsSl$auxiliary$qd5FbCFh</td>
   </tr>
   <tr>
-    <td class="name">MovieRepository$MockitoMock$tuRDwJMn$auxiliary$ediLr0cb</td>
+    <td class="name">BookingRepository$MockitoMock$IoE3qsSl$auxiliary$vceWmRfy</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -50,21 +50,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package moviebookingsystem.repository;
 &nbsp;
-&nbsp;import moviebookingsystem.constant.Genre;
-&nbsp;import moviebookingsystem.model.Movie;
+&nbsp;import moviebookingsystem.model.Booking;
 &nbsp;import org.springframework.data.repository.CrudRepository;
 &nbsp;import org.springframework.stereotype.Repository;
 &nbsp;
-&nbsp;import java.util.List;
-&nbsp;import java.util.Optional;
-&nbsp;
 &nbsp;@Repository
-&nbsp;public interface MovieRepository extends CrudRepository&lt;Movie, Long&gt; {
-&nbsp;    List&lt;Movie&gt; findByName(String name);
-&nbsp;    List&lt;Movie&gt; findAll();
-&nbsp;    Optional&lt;Movie&gt; findById(long id);
-&nbsp;
-&nbsp;    List&lt;Movie&gt; findAllByGenre(Genre genre);
+&nbsp;public interface BookingRepository extends CrudRepository&lt;Booking, Long&gt; {
 &nbsp;}
 </code>
 </pre>
@@ -89,7 +80,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-10-31 15:18</div>
+    <div style="float:right;">generated on 2023-10-31 16:19</div>
 </div>
 </body>
 </html>
