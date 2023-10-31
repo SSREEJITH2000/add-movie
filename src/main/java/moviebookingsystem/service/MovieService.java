@@ -5,19 +5,14 @@ import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
 import moviebookingsystem.model.Booking;
-import moviebookingsystem.model.Member;
 import moviebookingsystem.model.Movie;
-import moviebookingsystem.model.Seat;
 import moviebookingsystem.model.ShowTime;
 import moviebookingsystem.repository.BookingRepository;
-import moviebookingsystem.repository.MemberRepository;
 import moviebookingsystem.repository.MovieRepository;
-import moviebookingsystem.repository.SeatRepository;
 import moviebookingsystem.repository.ShowTimeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +22,6 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final ShowTimeRepository showTimeRepository;
     private final BookingRepository bookingRepository;
-    private final SeatRepository seatRepository;
-    private final MemberRepository memberRepository;
 
     public Long addMovie(MovieRequest request) {
         Movie entity = new Movie(request.getName(), request.getGenre());
@@ -99,20 +92,12 @@ public class MovieService {
                 .orElseThrow(() -> new RuntimeException("ShowTime not found"));
         this.showTimeRepository.delete(showTime);
     }
-
     public long createBooking(BookingRequest request){
         Movie movie = movieRepository.findById(request.getMovieId())
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
-        Member member = bookingRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new RuntimeException("Member not found")).getMember();
         ShowTime showTime = showTimeRepository.findById(request.getShowTimeId())
                 .orElseThrow(() -> new RuntimeException("ShowTime not found"));
-        Seat seat = seatRepository.findById(request.getSeatNumber())
-                .orElseThrow(() -> new RuntimeException("Seat not found"));
-
         Booking booking = Booking.builder()
-                .member(member)
-                .seats(Arrays.asList(seat))
                 .showTime(showTime)
                 .movie(movie)
                 .build();
