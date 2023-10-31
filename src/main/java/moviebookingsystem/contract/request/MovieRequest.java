@@ -8,8 +8,6 @@ import moviebookingsystem.constant.Genre;
 
 @Getter
 @Setter
-@Data
-@Builder
 public class MovieRequest {
     private String name;
     private Genre genre;

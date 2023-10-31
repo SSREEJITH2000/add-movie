@@ -8,13 +8,6 @@ public class BookingRequest {
 
     public BookingRequest(){}
 
-    public BookingRequest(long movieId, long seatNumber, long showTimeId, long memberId) {
-        this.movieId = movieId;
-        this.seatNumber = seatNumber;
-        this.showTimeId = showTimeId;
-        this.memberId = memberId;
-    }
-
     public long getMovieId() {
         return movieId;
     }

@@ -38,13 +38,6 @@ public class ShowTime {
 
     public ShowTime(){}
 
-    public ShowTime(Long id, LocalDateTime startTime, LocalDateTime endTime, Movie movie) {
-        this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.movie = movie;
-    }
-
     public Long getId() {
         return id;
     }
