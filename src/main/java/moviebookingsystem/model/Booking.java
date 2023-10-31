@@ -29,6 +29,5 @@ public class Booking {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    public Booking() {
-    }
+    public Booking() {}
 }

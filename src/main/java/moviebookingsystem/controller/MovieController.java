@@ -1,5 +1,6 @@
 package moviebookingsystem.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
@@ -41,7 +40,8 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public @ResponseBody Long updateMovieById(@PathVariable long id, @RequestBody MovieRequest request) {
+    public @ResponseBody Long updateMovieById(
+            @PathVariable long id, @RequestBody MovieRequest request) {
         return movieService.updateMovieById(id, request);
     }
 
@@ -69,6 +69,7 @@ public class MovieController {
     public void deleteShowTime(@PathVariable Long showTimeId) {
         movieService.deleteShowTime(showTimeId);
     }
+
     @PostMapping("/{id}/showTimes/{showTimeId}/bookings")
     public @ResponseBody Long createBooking(@RequestBody BookingRequest request) {
         return this.movieService.createBooking(request);

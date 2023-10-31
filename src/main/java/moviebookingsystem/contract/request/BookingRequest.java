@@ -11,6 +11,5 @@ public class BookingRequest {
     private long showTimeId;
     private long memberId;
 
-    public BookingRequest(){}
-
+    public BookingRequest() {}
 }

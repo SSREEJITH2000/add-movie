@@ -10,7 +10,7 @@ public class MovieRequest {
     private String name;
     private Genre genre;
 
-    public MovieRequest(){}
+    public MovieRequest() {}
 
     public MovieRequest(String name, Genre genre) {
         this.name = name;

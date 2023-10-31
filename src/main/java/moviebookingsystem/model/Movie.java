@@ -7,11 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import moviebookingsystem.constant.Genre;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import moviebookingsystem.constant.Genre;
 
 @Entity
 @Getter
@@ -19,15 +18,19 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private Genre genre;
+
     @OneToMany(mappedBy = "movie")
     @JsonIgnore
     private List<ShowTime> showTimes = new ArrayList<>();
+
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Booking> bookings = new ArrayList<>();
 
-    public Movie(){}
+    public Movie() {}
+
     public Movie(String name, Genre genre) {
         this.name = name;
         this.genre = genre;

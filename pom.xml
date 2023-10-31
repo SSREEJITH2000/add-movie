@@ -15,6 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<spotless.version>2.38.0</spotless.version>
 		<modelmapper.version>3.1.1</modelmapper.version>
 	</properties>
 	<dependencies>
@@ -72,6 +73,44 @@
 
 
 			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+				<configuration>
+					<formats>
+						<format>
+							<includes>
+								<include>*.md</include>
+								<include>.gitignore</include>
+							</includes>
+							<trimTrailingWhitespace/>
+							<endWithNewline/>
+							<indent>
+								<tabs>true</tabs>
+								<spacesPerTab>4</spacesPerTab>
+							</indent>
+						</format>
+					</formats>
+					<java>
+						<googleJavaFormat>
+							<version>1.10.0</version>
+							<style>AOSP</style>
+							<reflowLongStrings>true</reflowLongStrings>
+						</googleJavaFormat>
+					</java>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.8</version>
@@ -89,6 +128,43 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+				<configuration>
+					<formats>
+						<format>
+							<includes>
+								<include>*.md</include>
+								<include>.gitignore</include>
+							</includes>
+							<trimTrailingWhitespace/>
+							<endWithNewline/>
+							<indent>
+								<tabs>true</tabs>
+								<spacesPerTab>4</spacesPerTab>
+							</indent>
+						</format>
+					</formats>
+					<java>
+						<googleJavaFormat>
+							<version>1.10.0</version>
+							<style>AOSP</style>
+							<reflowLongStrings>true</reflowLongStrings>
+						</googleJavaFormat>
+					</java>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

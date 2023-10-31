@@ -1,5 +1,18 @@
 package moviebookingsystem.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
@@ -13,20 +26,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class MovieServiceTest {
     private MovieRepository movieRepository;
@@ -80,9 +79,12 @@ public class MovieServiceTest {
     void testGetMovieByIdNotFound() {
         long movieId = 1L;
         when(movieRepository.findById(movieId)).thenReturn(Optional.empty());
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            movieService.getMovieById(movieId);
-        });
+        Exception exception =
+                assertThrows(
+                        RuntimeException.class,
+                        () -> {
+                            movieService.getMovieById(movieId);
+                        });
         String expectedMessage = "Movie not found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
@@ -166,7 +168,8 @@ public class MovieServiceTest {
         long movieId = 1L;
         List<ShowTime> showTimes = Arrays.asList(new ShowTime(), new ShowTime());
         when(movieRepository.findById(movieId)).thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> movieService.addShowTimesToMovie(movieId, showTimes));
+        assertThrows(
+                RuntimeException.class, () -> movieService.addShowTimesToMovie(movieId, showTimes));
     }
 
     @Test
@@ -219,7 +222,6 @@ public class MovieServiceTest {
         long bookingId = movieService.createBooking(request);
         assertNotEquals(1, bookingId);
     }
-
 
     @Test
     public void testCreateBooking_MovieNotFound() {

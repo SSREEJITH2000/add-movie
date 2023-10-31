@@ -11,11 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -24,6 +23,7 @@ public class ShowTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "start_time")
     @JsonProperty("startTime")
     private LocalDateTime startTime;
@@ -31,6 +31,7 @@ public class ShowTime {
     @Column(name = "end_time")
     @JsonProperty("endTime")
     private LocalDateTime endTime;
+
     @ManyToOne
     @JoinColumn(name = "movie_id")
     @JsonIgnore
@@ -38,7 +39,6 @@ public class ShowTime {
 
     @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
     private List<Booking> bookings;
-    
 
-    public ShowTime(){}
+    public ShowTime() {}
 }
