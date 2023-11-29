@@ -1,18 +1,22 @@
 package moviebookingsystem.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
+import moviebookingsystem.contract.request.ShowTimeRequest;
 import moviebookingsystem.model.Booking;
 import moviebookingsystem.model.Movie;
 import moviebookingsystem.model.ShowTime;
 import moviebookingsystem.repository.BookingRepository;
 import moviebookingsystem.repository.MovieRepository;
 import moviebookingsystem.repository.ShowTimeRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,10 +25,11 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final ShowTimeRepository showTimeRepository;
     private final BookingRepository bookingRepository;
+    private final ModelMapper modelMapper;
 
     public Long addMovie(MovieRequest request) {
-        Movie entity = new Movie(request.getName(), request.getGenre());
-        return this.movieRepository.save(entity).getId();
+        Movie movie = movieRepository.save(modelMapper.map(request, Movie.class));
+        return movie.getId();
     }
 
     public List<Movie> getAllMovies() {
@@ -46,11 +51,16 @@ public class MovieService {
         Optional<Movie> movie = this.movieRepository.findById(id);
         if (!movie.isPresent()) {
             throw new RuntimeException("Movie not found");
+        } else {
+            Movie updatedMovie = movie.get();
+            updatedMovie = Movie.builder()
+                    .id(updatedMovie.getId())
+                    .name(request.getName())
+                    .genre(request.getGenre())
+                    .build();
+            movieRepository.save(updatedMovie);
+            return updatedMovie.getId();
         }
-        Movie existingMovie = movie.get();
-        existingMovie.setName(request.getName());
-        existingMovie.setGenre(request.getGenre());
-        return this.movieRepository.save(existingMovie).getId();
     }
 
     public void deleteMovieById(long id) {
@@ -65,28 +75,24 @@ public class MovieService {
         return movies;
     }
 
-    public Long addShowTimesToMovie(long movieId, List<ShowTime> showTimes) {
-        Optional<Movie> optionalMovie = movieRepository.findById(movieId);
+    public List<Long> addShowTimeToMovie(long movieId, ShowTimeRequest request) {
+        Movie movie = getMovieById(movieId);
+        List<Long> savedShowTimeIds = new ArrayList<>();
 
-        if (!optionalMovie.isPresent()) {
-            throw new RuntimeException("Movie not found");
+        for (LocalDateTime showTime : request.getShowTimes()) {
+            ShowTime newShowTime = ShowTime.builder()
+                    .movie(movie)
+                    .showTimes(Collections.singletonList(showTime))
+                    .build();
+            ShowTime savedShowTime = showTimeRepository.save(newShowTime);
+            savedShowTimeIds.add(savedShowTime.getId());
         }
-        Movie movie = optionalMovie.get();
-        showTimes.forEach(
-                showTime -> {
-                    showTime.setMovie(movie);
-                    showTimeRepository.save(showTime);
-                });
-        movie.getShowTimes().addAll(showTimes);
-        return movieRepository.save(movie).getId();
+        return savedShowTimeIds;
     }
 
     public List<ShowTime> getAllShowTimesForMovie(Long movieId) {
-        Movie movie =
-                this.movieRepository
-                        .findById(movieId)
-                        .orElseThrow(() -> new RuntimeException("Movie not found"));
-        return movie.getShowTimes();
+        Movie movie = getMovieById(movieId);
+        return showTimeRepository.findByMovie(movie);
     }
 
     public void deleteShowTime(Long showTimeId) {
@@ -97,17 +103,25 @@ public class MovieService {
         this.showTimeRepository.delete(showTime);
     }
 
-    public long createBooking(BookingRequest request) {
-        Movie movie =
-                movieRepository
-                        .findById(request.getMovieId())
-                        .orElseThrow(() -> new RuntimeException("Movie not found"));
-        ShowTime showTime =
-                showTimeRepository
-                        .findById(request.getShowTimeId())
-                        .orElseThrow(() -> new RuntimeException("ShowTime not found"));
-        Booking booking = Booking.builder().showTime(showTime).movie(movie).build();
-        bookingRepository.save(booking);
-        return booking.getId();
+    public ShowTime getShowTime(Long showtimeId) {
+        return showTimeRepository.findById(showtimeId)
+                .orElseThrow(() -> new RuntimeException("ShowTime not found with id " + showtimeId));
+    }
+
+    public Booking makeBooking(Long movieId, Long showtimeId, BookingRequest bookingRequest) {
+        Movie movie = getMovieById(movieId);
+        ShowTime showTime = getShowTime(showtimeId);
+
+        if (!showTime.getMovie().equals(movie)) {
+            throw new RuntimeException("ShowTime " + showtimeId + " does not belong to Movie " + movieId);
+        }
+
+        Booking booking = Booking.builder()
+                .showTime(showTime)
+                .movie(movie)
+                .customerName(bookingRequest.getCustomerName())
+                .build();
+
+        return bookingRepository.save(booking);
     }
 }

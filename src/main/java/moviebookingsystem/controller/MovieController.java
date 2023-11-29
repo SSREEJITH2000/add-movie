@@ -1,10 +1,13 @@
 package moviebookingsystem.controller;
 
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
 import moviebookingsystem.contract.request.MovieRequest;
+import moviebookingsystem.contract.request.ShowTimeRequest;
+import moviebookingsystem.model.Booking;
 import moviebookingsystem.model.Movie;
 import moviebookingsystem.model.ShowTime;
 import moviebookingsystem.service.MovieService;
@@ -55,9 +58,9 @@ public class MovieController {
         return movieService.getAllMoviesByGenre(genre);
     }
 
-    @PostMapping("/{id}/showTimes")
-    public Long addShowTimesToMovie(@PathVariable long id, @RequestBody List<ShowTime> showTimes) {
-        return movieService.addShowTimesToMovie(id, showTimes);
+    @PostMapping("/{movieId}/showTimes")
+    public @ResponseBody List<Long> addShowTimeToMovie(@PathVariable Long movieId, @RequestBody ShowTimeRequest request) {
+        return movieService.addShowTimeToMovie(movieId, request);
     }
 
     @GetMapping("/{id}/showTimes")
@@ -70,8 +73,13 @@ public class MovieController {
         movieService.deleteShowTime(showTimeId);
     }
 
+    @GetMapping("/showTime/{id}")
+    public @ResponseBody ShowTime getShowtime(@PathVariable Long id) {
+        return movieService.getShowTime(id);
+    }
+
     @PostMapping("/{id}/showTimes/{showTimeId}/bookings")
-    public @ResponseBody Long createBooking(@RequestBody BookingRequest request) {
-        return this.movieService.createBooking(request);
+    public @ResponseBody Booking makeBooking(@PathVariable Long id, @PathVariable Long showTimeId, @RequestBody BookingRequest booking) {
+        return movieService.makeBooking(id, showTimeId, booking);
     }
 }

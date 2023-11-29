@@ -3,12 +3,13 @@ package moviebookingsystem.contract.request;
 import lombok.Getter;
 import lombok.Setter;
 import moviebookingsystem.model.Movie;
-import moviebookingsystem.model.ShowTime;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
-public class BookingRequest {
-    private String customerName;
-    private ShowTime showTime;
+public class ShowTimeRequest {
+    private List<LocalDateTime> showTimes;
     private Movie movie;
 }
