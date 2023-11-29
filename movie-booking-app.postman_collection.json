@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "58074e3d-4f60-49c1-b2b3-f53c85cfe772",
+		"name": "movie-booking-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28650719"
+	},
+	"item": [
+		{
+			"name": "Add showtime to movie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"showTimes\": [\r\n        \"2023-11-28T12:00:00\",\r\n        \"2023-11-28T15:00:00\",\r\n        \"2023-11-28T18:00:00\",\r\n        \"2023-11-28T21:00:00\"\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/movies/1/showTimes"
+			},
+			"response": []
+		},
+		{
+			"name": "Add a movie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n        \"name\": \"fjdjjjjdj\",\r\n        \"genre\": \"ACTION\"\r\n    }\r\n   \r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/movies"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/movies"
+			},
+			"response": []
+		},
+		{
+			"name": "Booking a movie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"startTime\": \"2023-11-01T10:00:00\",\r\n        \"endTime\": \"2023-11-01T12:00:00\"\r\n    },\r\n    {\r\n        \"startTime\": \"2023-11-01T14:00:00\",\r\n        \"endTime\": \"2023-11-01T16:00:00\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/movies/1/showTimes"
+			},
+			"response": []
+		},
+		{
+			"name": "Update a movie",
+			"request": {
+				"method": "PUT",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get movie by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/movies/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a movie",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/movies/4"
+			},
+			"response": []
+		},
+		{
+			"name": "Get movies by genre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/movies/genre/ACTION"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all showtimes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/movies/1/showTimes"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a showtime",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/movies/1/showTimes/2"
+			},
+			"response": []
+		},
+		{
+			"name": "Get showtime each",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

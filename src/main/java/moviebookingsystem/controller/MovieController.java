@@ -2,6 +2,7 @@ package moviebookingsystem.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import moviebookingsystem.constant.Genre;
 import moviebookingsystem.contract.request.BookingRequest;
@@ -28,7 +29,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @PostMapping
-    public @ResponseBody Long addMovie(@RequestBody MovieRequest request) {
+    public @ResponseBody Long addMovie(@Valid @RequestBody MovieRequest request) {
         return this.movieService.addMovie(request);
     }
 
@@ -44,7 +45,7 @@ public class MovieController {
 
     @PutMapping("/{id}")
     public @ResponseBody Long updateMovieById(
-            @PathVariable long id, @RequestBody MovieRequest request) {
+            @PathVariable long id,@Valid @RequestBody MovieRequest request) {
         return movieService.updateMovieById(id, request);
     }
 
